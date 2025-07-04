@@ -1,11 +1,11 @@
 workflows:
   ios-build:
-    name: Build IPA iOS ExploitApp
+    name: Build IPA iOS EvilWorkspace
     max_build_duration: 60
     environment:
       vars:
-        XCODE_PROJECT: "ExploitApp.xcodeproj"
-        XCODE_SCHEME: "ExploitApp"
+        XCODE_PROJECT: "EvilWorkspace.xcodeproj"
+        XCODE_SCHEME: "EvilWorkspace"
         EXPORT_OPTIONS_PLIST: "export/ExportOptions.plist"
       xcode: latest
       cocoapods: default
@@ -15,16 +15,9 @@ workflows:
           xcodebuild clean -project "$XCODE_PROJECT" -scheme "$XCODE_SCHEME"
       - name: Build et archive
         script: |
-          xcodebuild archive -project "$XCODE_PROJECT" -scheme "$XCODE_SCHEME" -archivePath "$CM_BUILD_DIR/ExploitApp.xcarchive" -destination 'generic/platform=iOS' ONLY_ACTIVE_ARCH=YES DEVELOPMENT_TEAM="$CM_DEVELOPMENT_TEAM"
+          xcodebuild archive -project "$XCODE_PROJECT" -scheme "$XCODE_SCHEME" -archivePath "$CM_BUILD_DIR/EvilWorkspace.xcarchive" -destination 'generic/platform=iOS' ONLY_ACTIVE_ARCH=YES DEVELOPMENT_TEAM="$CM_DEVELOPMENT_TEAM"
       - name: Export IPA
         script: |
-          xcodebuild -exportArchive -archivePath "$CM_BUILD_DIR/ExploitApp.xcarchive" -exportPath "$CM_BUILD_DIR/export" -exportOptionsPlist "$EXPORT_OPTIONS_PLIST"
+          xcodebuild -exportArchive -archivePath "$CM_BUILD_DIR/EvilWorkspace.xcarchive" -exportPath "$CM_BUILD_DIR/export" -exportOptionsPlist "$EXPORT_OPTIONS_PLIST"
     artifacts:
       - $CM_BUILD_DIR/export/*.ipa
-    publishing:
-      email:
-        recipients:
-          - "your@email.com"
-        notify:
-          success: true
-          failure: true
