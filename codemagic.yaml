@@ -4,7 +4,6 @@ workflows:
     max_build_duration: 60
     environment:
       vars:
-        XCODE_WORKSPACE: ""
         XCODE_PROJECT: "ExploitApp.xcodeproj"
         XCODE_SCHEME: "ExploitApp"
         EXPORT_OPTIONS_PLIST: "export/ExportOptions.plist"
@@ -28,4 +27,4 @@ workflows:
           - "your@email.com"
         notify:
           success: true
-          failure: true 
+          failure: true
