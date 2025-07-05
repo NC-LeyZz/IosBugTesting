@@ -9,7 +9,7 @@ func sendDeviceInfoToServer() {
         "ios": device.systemVersion,
         "uuid": device.identifierForVendor?.uuidString ?? "unknown"
     ]
-    guard let url = URL(string: "http://<ADRESSE_IP_SERVEUR>:5000/info") else { return }
+    guard let url = URL(string: "https://ton-domaine.com/info") else { return }
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
